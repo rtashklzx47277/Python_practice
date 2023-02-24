@@ -1,3 +1,4 @@
+import numpy as np
 # import sys
 # data = sys.stdin.read()
 data = """2
@@ -24,23 +25,18 @@ data = """2
 
 lines = data.splitlines()
 
-m, r, r, n = lines[1].split(',')
-start, end = 2, 2 * int(m) + int(r) + 2
-matrix1 = lines[start:end]
-temp = [[]] * 3
-print(temp)
-for line in matrix1:
-  line = line.split(',')
-  temp[0].append
-  print(line)
+start = 1
+m, r, r, n = [int(line) for line in lines[1].split(',')]
+matrix_a = [[int(num) for num in line.split()] for line in lines[start + 1:start + 1 + m]]
+matrix_b = [[int(num) for num in line.split()] for line in lines[start + 1 + m:start + 1 + m + r]]
+matrix_c = [[int(num) for num in line.split()] for line in lines[start + 1 + m + r:start + 1 + 2 * m + r]]
+for i in range(3):
+  if max([row.count(9999) for row in [matrix_a, matrix_b, matrix_c][i]]) == 1: unknown = i
+print(unknown)
 
-# lines = data.splitlines()
-# num = int(lines[0])
-# l = []
-# for line in lines:
-#   if ',' in line:
-#     m, r, r, n = line.split(',')
-#     l.append
+if unknown == 0: matrix = (np.array(matrix_c).dot(np.linalg.inv(np.array(matrix_b))) - np.array(matrix_a)).tolist()
+elif unknown == 1: matrix = (np.linalg.inv(np.array(matrix_a)).dot(np.array(matrix_c)) - np.array(matrix_b)).tolist()
+else: matrix = (np.array(matrix_a).dot(np.array(matrix_b)) - np.array(matrix_c)).tolist()
+print(matrix)
 
-# for line in data.splitlines()[1:]:
-#   print(bin(int(num)).count('1'))
+

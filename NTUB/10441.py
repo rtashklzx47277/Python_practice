@@ -1,37 +1,31 @@
+import sys
+data = sys.stdin.read()
+
 class BinaySearchTree():
-  def __init__(self, value: int) -> None:
-    self.val = value
+  def __init__(self, value):
+    self.value = value
     self.left = None
     self.right = None
 
-nodes = [7,4,1,5,12,8,9,15]
-root = BinaySearchTree(7)
+  def insert(self, node):
+    while node:
+      if node < self.value and self.left: self = self.left
+      elif node > self.value and self.right: self = self.right
+      else:
+        if node < self.value: self.left = BinaySearchTree(node)
+        else: self.right = BinaySearchTree(node)
+        return
 
-i = 1
-while i < len(nodes):
-  if i == 1 or i > pointer:
-    pointer = i
-    node = root
-  
-  if nodes[i] < node.val and node.left:
-    node = node.left
-    continue
-  elif nodes[i] < node.val:
-    node.left = BinaySearchTree(nodes[i])
-    i += 1
-  elif nodes[i] > node.val and node.right:
-    node = node.right
-    continue
-  elif nodes[i] > node.val:
-    node.right = BinaySearchTree(nodes[i])
-    i += 1
+  def travel(self, root):
+    post_travel = []
+    if root:
+      post_travel += self.travel(root.left)
+      post_travel += self.travel(root.right)
+      post_travel.append(root.value)
+    return post_travel
 
-travel = []
-while True:
-  if node.left:
-    node = node.left
-  else:
-    node = node.right
-  
-
-print(root.right.left.right.val)
+for line in data.splitlines()[2::2]:
+  nodes = [int(node) for node in line.split(',')]
+  root = BinaySearchTree(nodes[0])
+  for node in nodes[1:]: root.insert(node)
+  print(*root.travel(root), sep = ',')
