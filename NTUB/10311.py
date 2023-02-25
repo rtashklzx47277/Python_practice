@@ -1,7 +1,7 @@
 import sys
-input = sys.stdin.read()
+data = sys.stdin.read()
 
-for line in input.splitlines()[1:]:
+for line in data.splitlines()[1:]:
   check = 'Y'
   num1 = int(line.split(',')[0])
   num2 = int(line.split(',')[1])

@@ -1,7 +1,7 @@
 import sys
-input = sys.stdin.read()
+data = sys.stdin.read()
 
-for line in input.splitlines():
+for line in data.splitlines():
   ans = count = 0
   for i in range(len(line) - 1):
     if line[i] <= line[i + 1]:
