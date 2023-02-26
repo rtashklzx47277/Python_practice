@@ -8,13 +8,10 @@ class BinaySearchTree():
     self.right = None
 
   def insert(self, node):
-    while node:
-      if node < self.value and self.left: self = self.left
-      elif node > self.value and self.right: self = self.right
-      else:
-        if node < self.value: self.left = BinaySearchTree(node)
-        else: self.right = BinaySearchTree(node)
-        return
+    if node < self.value and self.left: self.left.insert(node)
+    elif node > self.value and self.right: self.right.insert(node)
+    elif node < self.value: self.left = BinaySearchTree(node)
+    else: self.right = BinaySearchTree(node)
 
   def travel(self, root):
     post_travel = []
