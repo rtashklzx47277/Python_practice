@@ -1,17 +1,6 @@
 import sys
-# data = sys.stdin.read()
+data = sys.stdin.read()
 
-# data = '''3
-# 4,8,6,1,10,16,5,14,13
-# 1,4,5,6,8,10,13,14,16
-# 4,8,6,10
-# 16,14,13,4,8,6,5,10,1
-# 16,14,10,13,4,6,5,1,8
-# 7,4,12,1,5,8,10
-# 9,6,12,2,8,11,15,1,3,7'''
-
-data = '''1
-1,4,5,6,8,10,13,14,16'''
 class Tree():
   def __init__(self, value):
     self.value = value
@@ -19,10 +8,12 @@ class Tree():
     self.right = None
 
   def insert(self, node):
-    if node < self.value and self.left: self.left.insert(node)
-    elif node > self.value and self.right: self.right.insert(node)
-    elif node < self.value: self.left = Tree(node)
-    else: self.right = Tree(node)
+    if self.left:
+      self.right = Tree(node)
+      return self.right
+    else:
+      self.left = Tree(node)
+      return self.left
 
   def max_value(self):
     value = self.value
@@ -53,15 +44,19 @@ class Tree():
 
 for line in data.splitlines()[1:]:
   nodes = [int(node) for node in line.split(',')]
-
   min_heap = True
   max_heap = True
   for i in range(1, len(nodes)):
     if nodes[i] < nodes[(i - 1) // 2]: min_heap = False
     else: max_heap = False
-  # print(min_heap, max_heap)
 
-  root = Tree(nodes[0])
-  for node in nodes[1:]: root.insert(node)
-  print(root.left.node)
-  root.is_bst()
+  if min_heap or max_heap: print('H')
+  else:
+    root = Tree(nodes[0])
+    tree_nodes = [root]
+    for i in range(1, len(nodes)):
+      node = tree_nodes[(i - 1) // 2].insert(nodes[i])
+      tree_nodes.append(node)
+    bst = root.is_bst()
+    if bst: print('B')
+    else: print('F')
