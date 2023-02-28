@@ -12,38 +12,25 @@ data = '''9
 1,2 1,3 2,3
 1,2 2,3 3,4 1,5 5,4'''
 
+def find_node(node):
+  if tree[node] != node: tree[node] = find_node(tree[node])
+  return tree[node]
+
 for line in data.splitlines()[1:]:
   edges = [item.split(',') for item in line.split()]
+  
+  tree = {}
+  for i, j in edges:
+    if i not in tree: tree[i] = i
+    if j not in tree: tree[j] = j
 
-  loop = None
-  nodes_set = [[], [], [], [], [], [], [], [], [], []]
+  n = len(tree) - 1
+  span = []
   for edge in edges:
-    for nodes in nodes_set:
-      if edge[0] in nodes and edge[1] in nodes: loop = (edge[0], edge[1])
-      elif edge[0] in nodes or edge[1] in nodes:
-        if edge[0] not in nodes: nodes.append(edge[0])
-        if edge[1] not in nodes: nodes.append(edge[1])
-        break
-      elif not nodes:
-        nodes.append(edge[0])
-        nodes.append(edge[1])
-        break
-  temp = 0
-  for i in range(10):
-    if nodes_set[i] == []:
-      temp = i
-      break
-  nodes_set = nodes_set[:temp]
-
-  # nodes_new = []
-  # for i in range(len(nodes_set) - 1):
-  #   for j in range(i, len(nodes_set)):
-  #     section = set(nodes_set[i]) & set(nodes_set[j])
-  #     if section: nodes_new.append(nodes_set[i] + nodes_set[j])
-  #     else:
-  #       nodes_new.append(nodes_set[i])
-  #       nodes_new.append(nodes_set[j])
-
-  if loop: print('L')
-  elif len(nodes_set) == 1: print('T')
-  else: print('F')
+    node_a, node_b = edge
+    if find_node(node_a) != find_node(node_b):
+      tree[find_node(node_b)] = find_node(node_a)
+      span.append(edge)
+      n -= 1
+      if n == 0: break
+  print(span)
