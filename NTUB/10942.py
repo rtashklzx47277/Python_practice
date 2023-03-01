@@ -70,16 +70,16 @@ for i in range(times):
   edges.sort(key = lambda node: node[0])
 
   dict = {}
-  for i in range(nums): dict.update({i + 1: [i + 1]})
+  for i in range(nums): dict.update({i + 1: []})
 
   check = None
   for i in range(nums):
     temp = edges[i][1]
     for j in range(nums):
-      if temp in dict[i + 1]: break
+      if temp == i + 1 or temp in dict[i + 1]: break
       dict[i + 1].append(temp)
       temp = edges[temp - 1][1]
-    if len(dict[i + 1]) == nums:
+    if len(dict[i + 1]) == nums - 1:
       check = i + 1
       break
 

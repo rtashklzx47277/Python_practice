@@ -1,5 +1,15 @@
 import sys
-data = sys.stdin.read()
+# data = sys.stdin.read()
+
+data = '''4
+ACCGATGCAGCGCTC
+CCGATGA
+abcdghxy
+aedfhrz
+13567
+24680
+ab12
+Abc1'''
 
 lines = data.splitlines()
 for i in range(1, len(lines), 2):
