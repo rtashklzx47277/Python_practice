@@ -12,25 +12,70 @@ data = '''9
 1,2 1,3 2,3
 1,2 2,3 3,4 1,5 5,4'''
 
-def find_node(node):
-  if tree[node] != node: tree[node] = find_node(tree[node])
-  return tree[node]
+class Graph:
+  def __init__(self, edges, n):
+    self.adj = {}
+    for node in nodes: self.adj.update({node: []})
+
+    for (a, b) in edges:
+      self.adj[a].append(b)
+      self.adj[b].append(a)
+ 
+ 
+#函數對圖上的圖進行DFS遍歷
+def DFS(graph, v, discovered, parent = -1):
+ 
+    # 將當前節點標記為已發現
+    discovered[v] = True
+ 
+    # 對每條邊 (v, w) 執行
+    for w in graph.adjList[v]:
+ 
+        # 如果 `w` 沒有被發現
+        if not discovered[w]:
+            if DFS(graph, w, discovered, v):
+                return True
+ 
+        # 如果 `w` 被發現，並且 `w` 不是父母
+        elif w != parent:
+            # 我們發現了一個後沿(循環)
+            return True
+ 
+    # 圖中未發現後邊
+    return False
+ 
+ 
+# if __name__ == '__main__':
+ 
+#     # 圖邊列表
+#     edges = [
+#         (0, 1), (0, 6), (0, 7), (1, 2), (1, 5), (2, 3),
+#         (2, 4), (7, 8), (7, 11), (8, 9), (8, 10), (10, 11)
+#         #邊(10, 11)在圖中引入了一個循環
+#     ]
+ 
+#     # 圖中節點總數(0到11)
+#     n = 12
+ 
+#     # 從給定的邊構建圖
+#     graph = Graph(edges, n)
+ 
+#     # 跟踪是否發現頂點
+#     discovered = [False] * n
+ 
+#     # 從第一個頂點開始進行DFS遍歷
+#     if DFS(graph, 0, discovered):
+#         print('The graph contains a cycle')
+#     else:
+#         print('The graph doesn\'t contain any cycle')
 
 for line in data.splitlines()[1:]:
-  edges = [item.split(',') for item in line.split()]
-  
-  tree = {}
-  for i, j in edges:
-    if i not in tree: tree[i] = i
-    if j not in tree: tree[j] = j
-
-  n = len(tree) - 1
-  span = []
-  for edge in edges:
-    node_a, node_b = edge
-    if find_node(node_a) != find_node(node_b):
-      tree[find_node(node_b)] = find_node(node_a)
-      span.append(edge)
-      n -= 1
-      if n == 0: break
-  print(span)
+  edges, nodes = [], []
+  for edge in line.split():
+    a, b = (int(num) for num in edge.split(','))
+    edges.append((a, b))
+    if a not in nodes: nodes.append(a)
+    if b not in nodes: nodes.append(b)
+  graph = Graph(edges, len(nodes))
+  print(graph.adj)
+  break

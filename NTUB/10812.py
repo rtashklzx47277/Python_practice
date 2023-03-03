@@ -25,13 +25,14 @@ for line in data.splitlines()[1:]:
       if score[i + 2] == 'X': ans += 10
       elif score[i + 2] == '/': ans += 10 - int(score[i + 1])
       else: ans += int(score[i + 2])
+      num += 2
     elif score[i] == '/':
       ans += 10 - int(score[i - 1])
       if score[i + 1] == 'X': ans += 10
       else: ans += int(score[i + 1])
-    else: ans += int(score[i])
-
-    if score[i] == 'X': num += 2
-    else: num += 1
+      num += 1
+    else:
+      ans += int(score[i])
+      num += 1
     if num == 20: break
   print(ans)

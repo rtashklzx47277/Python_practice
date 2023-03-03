@@ -63,29 +63,50 @@ for i in range(times):
   start = end
   nums = int(lines[start])
   end = start + nums + 1
+  graph = [[] for _ in range(nums)]
 
-  edges = []
-  for line in lines[start + 1:end]:
-    edges.append([int(num) for num in line.split()])
-  edges.sort(key = lambda node: node[0])
+  for j in range(nums):
+    u, v = map(int, lines[start + 1:end][j].split())
+    graph[u - 1].append(v - 1)
+    graph[v - 1].append(u - 1)
 
-  dict = {}
-  for i in range(nums): dict.update({i + 1: []})
+  # edges = []
+  # for line in lines[start + 1:end]:
+  #   edges.append([int(num) for num in line.split()])
+  # edges.sort(key = lambda node: node[0])
 
-  check = None
-  for i in range(nums):
-    temp = edges[i][1]
-    for j in range(nums):
-      if temp == i + 1 or temp in dict[i + 1]: break
-      dict[i + 1].append(temp)
-      temp = edges[temp - 1][1]
-    if len(dict[i + 1]) == nums - 1:
-      check = i + 1
-      break
+  # dict = {}
+  # for i in range(nums): dict[i + 1] = set()
 
-  if check: print(check)
-  else:
-    ans = (0, 0)
-    for item in dict:
-      if ans[1] < len(dict[item]): ans = (item ,len(dict[item]))
-    print(ans[0])
+  # check = None
+  # for i in range(nums):
+  #   temp = edges[i][1]
+  #   while temp != i + 1 and temp not in dict[i + 1]:
+  #     dict[i + 1].add(temp)
+  #     temp = edges[temp - 1][1]
+  #   if len(dict[i + 1]) == nums - 1:
+  #     check = i + 1
+  #     break
+
+  # if check: print(check)
+  # else: print(max(dict, key = lambda node: len(dict[node])))
+
+T = int(input())
+for i in range(T):
+    N = int(input())
+    graph = [[] for _ in range(N)]
+    for j in range(N):
+        u, v = map(int, input().split())
+        graph[u-1].append(v-1)
+        graph[v-1].append(u-1)
+
+    # 找到連通分量中最小度數的節點
+    min_degree = sys.maxsize
+    start_node = 0
+    for j in range(N):
+        if len(graph[j]) < min_degree:
+            min_degree = len(graph[j])
+            start_node = j
+    
+    # 將特殊郵件發送給 start_node，因為它有最小度數
+    print(f"Case {i+1}: {start_node+1}")
