@@ -1,3 +1,3 @@
 # Python
  
-Just for practice.
+Algorithm practice.
